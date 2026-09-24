@@ -1,0 +1,395 @@
+{% extends 'bbnails/base.html' %}
+{% load static %}
+
+{% block title %}BB Nails Salon | Luxury Nail Care & Art{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Premium Color Palette Override */
+    :root {
+        --salon-pink: #f7b3c1;
+        --salon-rose: #f00084;
+        --salon-gold: #D4AF37;
+        --salon-gold-hover: #AA820A;
+        --salon-dark: #2A1A1F;
+        --salon-card-bg: #FFFFFF;
+    }
+
+    body {
+        background-color: #FAFAFA;
+    }
+
+    /* Utility Classes */
+    .text-gold { color: var(--salon-gold) !important; }
+    .bg-salon-pink { background-color: var(--salon-pink) !important; }
+
+    /* Custom Buttons */
+    .btn-gold {
+        background: linear-gradient(135deg, #D4AF37 0%, #EDC967 100%);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 30px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-gold:hover {
+        background: linear-gradient(135deg, #C59B27 0%, #D4AF37 100%);
+        color: #FFFFFF;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .btn-outline-gold {
+        border: 2px solid var(--salon-gold);
+        color: var(--salon-dark);
+        border-radius: 30px;
+        padding: 10px 28px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-gold:hover {
+        background-color: var(--salon-gold);
+        color: #FFFFFF;
+    }
+
+    /* Service Cards */
+    .service-card {
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        background-color: #FFFFFF;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-color: var(--salon-gold);
+    }
+
+    /* Gallery Cards */
+    .gallery-card {
+        border-radius: 16px;
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        background-color: #FFFFFF;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .gallery-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--salon-gold);
+        box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25);
+    }
+
+    .carousel-gallery-img {
+        object-fit: cover;
+        width: 100%;
+        height: 240px;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-card:hover .carousel-gallery-img {
+        transform: scale(1.05);
+    }
+
+    /* Gold Carousel Indicator Dots */
+    .carousel-indicators [data-bs-target] {
+        background-color: var(--salon-gold);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators .active {
+        width: 24px;
+        border-radius: 10px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .carousel-gallery-img {
+            height: 140px;
+        }
+    }
+
+    /* Section Titles with Gold Underline */
+    .section-title {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background: var(--salon-gold);
+        bottom: 0;
+        left: 25%;
+        border-radius: 2px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Flash Messages (Success / Error alerts) -->
+{% if messages %}
+<div class="container mt-4">
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- 1. HERO SECTION -->
+<section class="bg-salon-pink py-5 border-bottom border-warning border-opacity-25">
+    <div class="container py-lg-4">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-6">
+                <span class="badge bg-white text-gold px-3 py-2 rounded-pill shadow-sm mb-3">
+                    <i class="bi bi-star-fill text-warning me-1"></i> Premier Nail Experience
+                </span>
+                <h1 class="display-4 fw-bold mb-3">Pamper & Perfection for Your Nails</h1>
+                <p class="lead text-muted mb-4">
+                    Indulge in a luxurious pampering session. From custom nail art to hydrating spa treatments, we bring elegance directly to your fingertips.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="#book" class="btn btn-gold">Book Your Visit</a>
+                    <a href="#services" class="btn btn-outline-gold">View Menu</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="position-relative d-inline-block">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" 
+                         alt="Luxury Nail Care" 
+                         class="img-fluid rounded-4 shadow-lg border border-3 border-white"
+                         style="max-height: 420px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- 2. SERVICES SECTION -->
+<section id="services" class="py-5">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="section-title fw-bold">Our Signature Services</h2>
+            <p class="text-muted mt-2">Crafted with precision, premium products, and care.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card service-card h-100 p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="p-3 bg-salon-pink rounded-circle text-gold fs-4">
+                            <i class="bi bi-gem"></i>
+                        </div>
+                        <span class="badge bg-salon-pink text-gold fs-6 px-3 py-2 rounded-pill">${{ service.price }}</span>
+                    </div>
+                    <h4 class="fw-semibold">{{ service.name }}</h4>
+                    {% if service.description %}
+                        <p class="text-secondary mt-2">{{ service.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>No services currently available. Please check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- 3. GALLERY SECTION -->
+<section id="gallery" class="py-5 bg-salon-pink">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="section-title fw-bold">Recent Artistry</h2>
+            <p class="text-muted mt-2">Explore our favorite client transformations.</p>
+        </div>
+
+        {% if gallery_images %}
+        <div id="nailArtCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner pb-4">
+                {% for img in gallery_images %}
+                {% if forloop.first or forloop.counter0|divisibleby:3 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="4000">
+                    <div class="row g-3">
+                {% endif %}
+
+                        <div class="col-4">
+                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
+                                <img src="{{ img.image.url }}" class="w-100 carousel-gallery-img" alt="{{ img.title|default:'Nail Art' }}">
+                            </div>
+                        </div>
+
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="carousel-indicators position-relative mt-2">
+                <button type="button" data-bs-target="#nailArtCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            </div>
+        </div>
+        {% else %}
+        <!-- Default Fallback Carousel when Database is Empty -->
+        <div id="nailArtCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner pb-4">
+                <div class="carousel-item active" data-bs-interval="4000">
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
+                                <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 1">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
+                                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 2">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
+                                <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- 4. APPOINTMENT BOOKING SECTION -->
+<section id="book" class="py-5">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white border-top border-4 border-warning">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Book Your Appointment</h2>
+                        <p class="text-muted">Select your preferred date, service, and time. We'll confirm shortly!</p>
+                    </div>
+
+                    <form action="{% url 'book_appointment' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label fw-medium">Full Name</label>
+            <input type="text" name="full_name" class="form-control rounded-3 p-2.5" placeholder="Jane Doe" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-medium">Phone Number</label>
+            <input type="tel" name="phone_number" class="form-control rounded-3 p-2.5" placeholder="(555) 000-0000" required>
+        </div>
+        
+        <div class="col-md-6">
+            <label class="form-label fw-medium">Select Service</label>
+            <select name="service" class="form-select rounded-3 p-2.5" required>
+                <option value="" disabled selected>Select a Service</option>
+                {% for service in services %}
+                    <option value="{{ service.name }} (${{ service.price }})">{{ service.name }} - ${{ service.price }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-medium">Preferred Date</label>
+            <input type="date" name="preferred_date" id="preferred_date" class="form-control rounded-3 p-2.5" required>
+        </div>
+
+        <div class="col-md-12">
+            <label for="time_slot" class="form-label fw-medium">Preferred Time Slot</label>
+            <select name="time_slot" id="time_slot" class="form-select rounded-3 p-2.5" required disabled>
+                <option value="" selected disabled>Please select a date first</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-medium">Special Requests or Notes</label>
+            <input type="text" name="special_requests" class="form-control rounded-3 p-2.5" placeholder="Optional notes...">
+        </div>
+
+        <!-- NEW: Inspiration Image Input -->
+        <div class="col-12">
+            <label class="form-label fw-medium">Inspiration Photo / Desired Design</label>
+            <input type="file" name="inspiration_image" accept="image/*" class="form-control rounded-3 p-2.5">
+            <div class="form-text">Upload a picture of the nail art or design style you'd like (optional).</div>
+        </div>
+
+        <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-gold w-100 py-3 text-uppercase fw-bold">Request Appointment</button>
+        </div>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AJAX JavaScript to auto-update time slots based on selected date -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('preferred_date');
+        const slotSelect = document.getElementById('time_slot');
+
+        // Restrict date selection to today onwards
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        dateInput.addEventListener('change', function() {
+            const dateValue = this.value;
+
+            slotSelect.innerHTML = '<option value="" disabled selected>Loading available slots...</option>';
+            slotSelect.disabled = true;
+
+            fetch(`/api/available-slots/?date=${dateValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    slotSelect.innerHTML = '';
+                    if (data.slots.length === 0) {
+                        slotSelect.innerHTML = '<option value="" disabled selected>No available slots for this date</option>';
+                        slotSelect.disabled = true;
+                    } else {
+                        slotSelect.innerHTML = '<option value="" disabled selected>Select an available slot</option>';
+                        data.slots.forEach(slot => {
+                            const option = document.createElement('option');
+                            option.value = slot.time_slot;
+                            option.textContent = slot.time_slot;
+                            slotSelect.appendChild(option);
+                        });
+                        slotSelect.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching available slots:', error);
+                    slotSelect.innerHTML = '<option value="" disabled selected>Error loading slots</option>';
+                });
+        });
+    });
+</script>
+
+{% endblock %}
