@@ -35,9 +35,21 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',          # <--- ADD THIS
     'django.contrib.staticfiles',
+    'cloudinary',                  # <--- ADD THIS
     'bbnails',
 ]
+
+# Cloudinary Configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'xyvqd2e2'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '543887491882665'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'zxpJcuy4DZdamuYpFJ7lhp9V8aE'),
+}
+
+# Set default media storage to Cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Middleware setup (add Whitenoise right under SecurityMiddleware)
 MIDDLEWARE = [
