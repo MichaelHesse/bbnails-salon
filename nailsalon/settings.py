@@ -128,11 +128,6 @@ CLOUDINARY_STORAGE = {
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# ADD THIS LINE: Tells Django to look in your root static directory
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -148,5 +143,6 @@ STORAGES = {
 
 # Compatibility fix required by django-cloudinary-storage
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # Email & Contact Settings
 SALON_WHATSAPP_NUMBER = os.environ.get('SALON_WHATSAPP_NUMBER', '233547867158')
