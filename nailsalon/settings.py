@@ -127,18 +127,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-# Static files configuration
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Tells Django where to look for app-level static files
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'bbnails', 'static'),
-]
-MEDIA_URL = '/media/'
+# 2. Add this explicitly so cloudinary_storage doesn't throw an AttributeError
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"MEDIA_URL = '/media/'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
