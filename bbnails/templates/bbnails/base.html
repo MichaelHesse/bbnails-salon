@@ -200,12 +200,11 @@
     </li>
 
     <!-- ADMIN / STAFF LINK (Only visible when logged in as staff/superuser) -->
-    {% if user.is_authenticated and user.is_staff %}
     <li class="nav-item">
-        <a class="nav-link text-warning fw-bold" href="{% url 'admin:index' %}" target="_blank">
-            <i class="bi bi-shield-lock-fill me-1"></i> Admin Panel
-        </a>
-    </li>
+    <a class="nav-link text-warning fw-bold" href="{% url 'admin_dashboard' %}">
+        <i class="bi bi-speedometer2 me-1"></i> Admin Portal
+    </a>
+</li>
     {% endif %}
 </ul>
 
