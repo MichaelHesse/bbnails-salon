@@ -200,12 +200,12 @@
     </li>
 
     <!-- ADMIN / STAFF LINK (Only visible when logged in as staff/superuser) -->
-   <li class="nav-item">
-    <a class="nav-link text-warning fw-bold" href="{% url 'admin:index' %}">
-        <i class="bi bi-shield-lock-fill me-1"></i> Admin Panel
-    </a>
-</li>
-    {% endif %}
+ <li class="nav-item">
+        <a class="nav-link text-warning fw-bold" href="{% url 'admin_dashboard' %}">
+            <i class="bi bi-speedometer2 me-1"></i> Admin Panel
+        </a>
+    </li>
+  
 
                     <!-- CTA Button -->
                     <div class="d-flex align-items-center gap-3">
