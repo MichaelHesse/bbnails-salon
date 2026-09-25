@@ -148,14 +148,4 @@ import os
 import os
 
 # Email Settings (Gmail SMTP)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-# Use the environment variable keys inside quotes:
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
-
-DEFAULT_FROM_EMAIL = f"BB Nails Salon <{os.environ.get('EMAIL_USER')}>"
-SALON_ADMIN_EMAIL = os.environ.get('EMAIL_USER')
+SALON_WHATSAPP_NUMBER = os.environ.get('SALON_WHATSAPP_NUMBER', '233547867158')

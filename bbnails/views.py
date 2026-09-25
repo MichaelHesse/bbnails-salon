@@ -6,8 +6,8 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.shortcuts import render, redirect
 import logging
+import urllib.parse
 
 # --- Client Public Views ---
 
@@ -71,34 +71,32 @@ def book_appointment(request):
                 inspiration_image=inspiration_image
             )
 
-            # 3. Send Twilio SMS Notification
-            try:
-                from twilio.rest import Client
-                account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-                auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-                twilio_number = os.environ.get('TWILIO_PHONE_NUMBER')
+            # 3. Construct WhatsApp Message and Redirect Link
+            whatsapp_number = getattr(settings, 'SALON_WHATSAPP_NUMBER', '')
+            
+            raw_message = (
+                f"Hello BB Nails Salon! 👋\n\n"
+                f"I just placed an appointment booking on your website:\n\n"
+                f"👤 Name: {full_name}\n"
+                f"📞 Phone: {phone_number}\n"
+                f"💅 Service: {service}\n"
+                f"📅 Date: {preferred_date}\n"
+                f"⏰ Time: {time_slot}\n"
+                f"📝 Notes: {special_requests if special_requests else 'None'}\n\n"
+                f"Please confirm my booking!"
+            )
 
-                if account_sid and auth_token and twilio_number and phone_number:
-                    client = Client(account_sid, auth_token)
-                    sms_body = (
-                        f"Hi {full_name}, your booking at BB Nails Salon is received!\n"
-                        f"Service: {service}\n"
-                        f"Date: {preferred_date} @ {time_slot}.\n"
-                        f"See you soon!"
-                    )
-                    client.messages.create(
-                        body=sms_body,
-                        from_=twilio_number,
-                        to=phone_number
-                    )
-            except Exception as e:
-                logger.error(f"SMS failure: {e}")
+            # Encode message for URL
+            encoded_message = urllib.parse.quote(raw_message)
+            whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
 
-            messages.success(request, "Your appointment request has been submitted successfully!")
-            return redirect('home')
+            # Optional success message
+            messages.success(request, "Your booking request was saved! Opening WhatsApp to send your confirmation...")
+            
+            # Redirect user directly to WhatsApp
+            return redirect(whatsapp_url)
 
         except Exception as e:
-            # Displays any remaining error directly on the webpage
             messages.error(request, f"Booking Error: {str(e)}")
             return redirect('home')
 
