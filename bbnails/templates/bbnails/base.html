@@ -113,6 +113,13 @@
         border-top: 3px solid var(--salon-rose);
     }
 
+    /* Fixes 'Mon - Fri' and all standard text paragraphs in the footer */
+    .footer-luxury p, 
+    .footer-luxury span:not(.footer-link) {
+        color: #FFFFFF !important;
+        font-weight: 500;
+    }
+
     .footer-luxury h5 {
         color: #FFFFFF;
         font-weight: 700;
@@ -250,6 +257,8 @@
                     </p>
                     <div class="d-flex gap-2 mt-3">
                         <a href="#" class="social-icon" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" target="_blank" class="social-icon" aria-label="Snapchat"><i class="fab fa-snapchat"></i>
+</a>
                     </div>
                 </div>
 
@@ -312,6 +321,7 @@
                 <div class="col-md-6 text-center text-md-end">
                     <a href="#" class="text-muted text-decoration-none me-3 hover-gold">Privacy Policy</a>
                     <a href="#" class="text-muted text-decoration-none hover-gold">Terms of Service</a>
+                    
                 </div>
             </div>
         </div>
