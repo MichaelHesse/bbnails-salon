@@ -24,8 +24,8 @@ class Service(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.name} - ${self.price}"
-
+        # Updated from '$' to 'GH₵'
+        return f"{self.name} - GH₵{self.price}"
 
 class BookingSlot(models.Model):
     """
