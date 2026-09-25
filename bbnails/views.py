@@ -7,8 +7,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from twilio.rest import Client
 import logging
 
 # --- Client Public Views ---
@@ -52,7 +50,7 @@ def book_appointment(request):
             special_requests = request.POST.get('special_requests', '')
             inspiration_image = request.FILES.get('inspiration_image')
 
-            # 1. Check if already booked
+            # 1. Check if the slot is already booked
             is_already_booked = Appointment.objects.filter(
                 preferred_date=preferred_date,
                 time_slot=time_slot
@@ -63,7 +61,7 @@ def book_appointment(request):
                 return redirect('home')
 
             # 2. Save appointment to database
-            appointment = Appointment.objects.create(
+            Appointment.objects.create(
                 full_name=full_name,
                 phone_number=phone_number,
                 service=service,
@@ -73,33 +71,7 @@ def book_appointment(request):
                 inspiration_image=inspiration_image
             )
 
-            # 3. Send Email Alert (Optional/Safe)
-            try:
-                admin_email = getattr(settings, 'SALON_ADMIN_EMAIL', None)
-                from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
-
-                if admin_email and from_email:
-                    subject = f"NEW BOOKING: {full_name} - {preferred_date} ({time_slot})"
-                    message = (
-                        f"You have a new appointment booking!\n\n"
-                        f"Client Name: {full_name}\n"
-                        f"Phone Number: {phone_number}\n"
-                        f"Service: {service}\n"
-                        f"Date: {preferred_date}\n"
-                        f"Time Slot: {time_slot}\n"
-                        f"Special Requests: {special_requests if special_requests else 'None'}"
-                    )
-                    send_mail(
-                        subject=subject,
-                        message=message,
-                        from_email=from_email,
-                        recipient_list=[admin_email],
-                        fail_silently=True,
-                    )
-            except Exception as e:
-                logger.error(f"Email failure: {e}")
-
-            # 4. Send Twilio SMS (Optional/Safe)
+            # 3. Send Twilio SMS Notification
             try:
                 from twilio.rest import Client
                 account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
@@ -126,7 +98,7 @@ def book_appointment(request):
             return redirect('home')
 
         except Exception as e:
-            # Catch any database or form processing error and print it to the screen!
+            # Displays any remaining error directly on the webpage
             messages.error(request, f"Booking Error: {str(e)}")
             return redirect('home')
 
