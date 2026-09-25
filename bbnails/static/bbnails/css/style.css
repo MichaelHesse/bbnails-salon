@@ -1,0 +1,38 @@
+:root {
+  --primary-bg: #fdfbf7;
+  --accent-gold: #d4af37;
+  --text-dark: #2c2c2c;
+  --card-bg: #ffffff;
+  --radius: 16px;
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--text-dark);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Glassmorphism Card Style */
+.booking-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 2rem;
+}
+
+/* Custom Styled Buttons */
+.btn-primary-salon {
+  background: linear-gradient(135deg, #d4af37 0%, #b89628 100%);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary-salon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}

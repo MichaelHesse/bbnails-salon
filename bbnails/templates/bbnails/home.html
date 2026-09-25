@@ -5,149 +5,219 @@
 
 {% block extra_css %}
 <style>
-    /* Premium Color Palette Override */
+    /* Premium Color Palette & CSS Variables */
     :root {
+        --salon-pink-soft: #fcf0f3;
         --salon-pink: #f7b3c1;
-        --salon-rose: #f00084;
+        --salon-rose: #e0115f;
         --salon-gold: #D4AF37;
-        --salon-gold-hover: #AA820A;
-        --salon-dark: #2A1A1F;
+        --salon-gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #AA820A 100%);
+        --salon-gold-hover: linear-gradient(135deg, #C59B27 0%, #D4AF37 100%);
+        --salon-dark: #1F1116;
+        --salon-muted: #6c757d;
         --salon-card-bg: #FFFFFF;
+        --salon-shadow: 0 10px 30px rgba(42, 26, 31, 0.05);
+        --salon-shadow-hover: 0 15px 35px rgba(212, 175, 55, 0.18);
     }
 
     body {
-        background-color: #FAFAFA;
+        background-color: #FAF8F9;
+        color: var(--salon-dark);
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
 
-    /* Utility Classes */
+    /* Utility Styling */
     .text-gold { color: var(--salon-gold) !important; }
-    .bg-salon-pink { background-color: var(--salon-pink) !important; }
+    .bg-salon-pink { background-color: var(--salon-pink-soft) !important; }
+    .bg-gold-subtle { background-color: rgba(212, 175, 55, 0.08); }
 
-    /* Custom Buttons */
+    /* Custom Gradient Buttons */
     .btn-gold {
-        background: linear-gradient(135deg, #D4AF37 0%, #EDC967 100%);
-        color: #FFFFFF;
+        background: var(--salon-gold-gradient);
+        color: #FFFFFF !important;
         border: none;
-        border-radius: 30px;
-        padding: 12px 30px;
+        border-radius: 50px;
+        padding: 12px 32px;
         font-weight: 600;
         letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
     }
 
     .btn-gold:hover {
-        background: linear-gradient(135deg, #C59B27 0%, #D4AF37 100%);
-        color: #FFFFFF;
+        background: var(--salon-gold-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
     }
 
     .btn-outline-gold {
         border: 2px solid var(--salon-gold);
-        color: var(--salon-dark);
-        border-radius: 30px;
-        padding: 10px 28px;
+        color: var(--salon-dark) !important;
+        border-radius: 50px;
+        padding: 10px 30px;
         font-weight: 600;
+        background: transparent;
         transition: all 0.3s ease;
     }
 
     .btn-outline-gold:hover {
         background-color: var(--salon-gold);
-        color: #FFFFFF;
+        color: #FFFFFF !important;
+        transform: translateY(-2px);
+    }
+
+    /* Section Headers */
+    .section-title {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 3px;
+        background: var(--salon-gold);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    /* Hero Styling */
+    .hero-badge {
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-img-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-img-wrapper::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        bottom: 15px;
+        left: 15px;
+        border: 2px solid var(--salon-gold);
+        border-radius: 1.5rem;
+        z-index: -1;
+        opacity: 0.5;
     }
 
     /* Service Cards */
     .service-card {
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        border-radius: 16px;
-        transition: all 0.3s ease;
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        border-radius: 20px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         background-color: #FFFFFF;
+        box-shadow: var(--salon-shadow);
     }
 
     .service-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        transform: translateY(-6px);
+        box-shadow: var(--salon-shadow-hover);
         border-color: var(--salon-gold);
+    }
+
+    .service-icon-box {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--salon-pink-soft);
+        color: var(--salon-gold);
     }
 
     /* Gallery Cards */
     .gallery-card {
-        border-radius: 16px;
-        border: 1px solid rgba(212, 175, 55, 0.25);
+        border-radius: 18px;
+        border: 1px solid rgba(212, 175, 55, 0.15);
         background-color: #FFFFFF;
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        transition: all 0.4s ease;
+        box-shadow: var(--salon-shadow);
     }
 
     .gallery-card:hover {
         transform: translateY(-6px);
         border-color: var(--salon-gold);
-        box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25);
+        box-shadow: var(--salon-shadow-hover);
     }
 
     .carousel-gallery-img {
         object-fit: cover;
         width: 100%;
-        height: 240px;
-        transition: transform 0.5s ease;
+        height: 280px;
+        transition: transform 0.6s ease;
     }
 
     .gallery-card:hover .carousel-gallery-img {
-        transform: scale(1.05);
+        transform: scale(1.06);
     }
 
-    /* Gold Carousel Indicator Dots */
+    /* Custom Form Controls */
+    .form-control, .form-select {
+        border-radius: 12px;
+        border: 1px solid #E2E8F0;
+        padding: 0.75rem 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--salon-gold);
+        box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    }
+
+    .input-group-text {
+        border-radius: 12px 0 0 12px;
+        border-color: #E2E8F0;
+        background-color: #F8FAFC;
+    }
+
+    /* Carousel Custom Indicators */
     .carousel-indicators [data-bs-target] {
         background-color: var(--salon-gold);
         width: 10px;
         height: 10px;
         border-radius: 50%;
         transition: all 0.3s ease;
+        border: none;
+        opacity: 0.4;
     }
 
     .carousel-indicators .active {
-        width: 24px;
-        border-radius: 10px;
+        width: 28px;
+        border-radius: 12px;
+        opacity: 1;
     }
 
-    /* Mobile Responsiveness */
     @media (max-width: 768px) {
         .carousel-gallery-img {
-            height: 140px;
+            height: 200px;
         }
-    }
-
-    /* Section Titles with Gold Underline */
-    .section-title {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 10px;
-    }
-
-    .section-title::after {
-        content: '';
-        position: absolute;
-        width: 50%;
-        height: 3px;
-        background: var(--salon-gold);
-        bottom: 0;
-        left: 25%;
-        border-radius: 2px;
+        .hero-img-wrapper::before {
+            display: none;
+        }
     }
 </style>
 {% endblock %}
 
-
 {% block content %}
 
-<!-- Flash Messages (Success / Error alerts) -->
+<!-- Flash Messages -->
 {% if messages %}
 <div class="container mt-4">
     {% for message in messages %}
-        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-sm" role="alert">
-            {{ message }}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-sm border-0 rounded-3" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i> {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
@@ -155,16 +225,16 @@
 {% endif %}
 
 <!-- 1. HERO SECTION -->
-<section class="bg-salon-pink py-5 border-bottom border-warning border-opacity-25">
+<section class="bg-salon-pink py-5 border-bottom border-warning border-opacity-10 position-relative overflow-hidden">
     <div class="container py-lg-4">
         <div class="row align-items-center gy-5">
             <div class="col-lg-6">
-                <span class="badge bg-white text-gold px-3 py-2 rounded-pill shadow-sm mb-3">
-                    <i class="bi bi-star-fill text-warning me-1"></i> Premier Nail Experience
+                <span class="hero-badge badge bg-white text-gold px-3 py-2 rounded-pill shadow-sm mb-3 d-inline-flex align-items-center">
+                    <i class="bi bi-star-fill text-warning me-2 fs-6"></i> Premier Nail Experience
                 </span>
-                <h1 class="display-4 fw-bold mb-3">Pamper & Perfection for Your Nails</h1>
-                <p class="lead text-muted mb-4">
-                    Indulge in a luxurious pampering session. From custom nail art to hydrating spa treatments, we bring elegance directly to your fingertips.
+                <h1 class="display-4 fw-bold mb-3 lh-sm">Pamper & Perfection for Your Nails</h1>
+                <p class="lead text-muted mb-4 fs-5">
+                    Indulge in a luxurious pampering session. From bespoke custom nail art to hydrating spa treatments, we bring elegance directly to your fingertips.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="#book" class="btn btn-gold">Book Your Visit</a>
@@ -172,72 +242,71 @@
                 </div>
             </div>
             <div class="col-lg-6 text-center">
-                <div class="position-relative d-inline-block">
+                <div class="hero-img-wrapper d-inline-block">
                     <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" 
                          alt="Luxury Nail Care" 
-                         class="img-fluid rounded-4 shadow-lg border border-3 border-white"
-                         style="max-height: 420px; object-fit: cover;">
+                         class="img-fluid rounded-4 shadow-lg border border-4 border-white"
+                         style="max-height: 440px; object-fit: cover;">
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 
 <!-- 2. SERVICES SECTION -->
 <section id="services" class="py-5">
     <div class="container py-4">
         <div class="text-center mb-5">
             <h2 class="section-title fw-bold">Our Signature Services</h2>
-            <p class="text-muted mt-2">Crafted with precision, premium products, and care.</p>
+            <p class="text-muted mt-2 fs-5">Crafted with precision, premium products, and absolute care.</p>
         </div>
 
         <div class="row g-4">
             {% for service in services %}
             <div class="col-md-6 col-lg-4">
-                <div class="card service-card h-100 p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-3 bg-salon-pink rounded-circle text-gold fs-4">
-                            <i class="bi bi-gem"></i>
+                <div class="card service-card h-100 p-4 border-0">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="service-icon-box shadow-sm">
+                            <i class="bi bi-gem fs-4"></i>
                         </div>
-                        <span class="badge bg-salon-pink text-gold fs-6 px-3 py-2 rounded-pill">${{ service.price }}</span>
+                        <span class="badge bg-gold-subtle text-gold fs-6 px-3 py-2 rounded-pill border border-warning border-opacity-25">${{ service.price }}</span>
                     </div>
-                    <h4 class="fw-semibold">{{ service.name }}</h4>
+                    <h4 class="fw-bold mb-2">{{ service.name }}</h4>
                     {% if service.description %}
-                        <p class="text-secondary mt-2">{{ service.description }}</p>
+                        <p class="text-secondary mb-0 leading-relaxed">{{ service.description }}</p>
                     {% endif %}
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center text-muted">
-                <p>No services currently available. Please check back soon!</p>
+            <div class="col-12 text-center text-muted py-5">
+                <i class="bi bi-calendar-x fs-1 d-block mb-3 text-gold"></i>
+                <p class="fs-5 mb-0">No services currently available. Please check back soon!</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-
 <!-- 3. GALLERY SECTION -->
 <section id="gallery" class="py-5 bg-salon-pink">
     <div class="container py-4">
         <div class="text-center mb-5">
             <h2 class="section-title fw-bold">Recent Artistry</h2>
-            <p class="text-muted mt-2">Explore our favorite client transformations.</p>
+            <p class="text-muted mt-2 fs-5">Explore our favorite client transformations and designs.</p>
         </div>
 
         {% if gallery_images %}
         <div id="nailArtCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner pb-4">
+            <div class="carousel-inner pb-5">
                 {% for img in gallery_images %}
                 {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="4000">
-                    <div class="row g-3">
+                    <div class="row g-4">
                 {% endif %}
 
-                        <div class="col-4">
-                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
-                                <img src="{{ img.image.url }}" class="w-100 carousel-gallery-img" alt="{{ img.title|default:'Nail Art' }}">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="gallery-card shadow-sm bg-white h-100">
+                                <img src="{{ img.image.url }}" class="carousel-gallery-img" alt="{{ img.title|default:'Nail Art' }}">
                             </div>
                         </div>
 
@@ -255,22 +324,22 @@
         {% else %}
         <!-- Default Fallback Carousel when Database is Empty -->
         <div id="nailArtCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner pb-4">
+            <div class="carousel-inner pb-5">
                 <div class="carousel-item active" data-bs-interval="4000">
-                    <div class="row g-3">
-                        <div class="col-4">
-                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
-                                <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 1">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="gallery-card shadow-sm bg-white h-100">
+                                <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=600&auto=format&fit=crop" class="carousel-gallery-img" alt="Nail Art Design 1">
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
-                                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 2">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="gallery-card shadow-sm bg-white h-100">
+                                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=600&auto=format&fit=crop" class="carousel-gallery-img" alt="Nail Art Design 2">
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="gallery-card shadow-sm rounded-3 overflow-hidden bg-white">
-                                <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=600&auto=format&fit=crop" class="w-100 carousel-gallery-img" alt="Nail Art 3">
+                        <div class="col-12 col-md-6 col-lg-4 d-none d-lg-block">
+                            <div class="gallery-card shadow-sm bg-white h-100">
+                                <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=600&auto=format&fit=crop" class="carousel-gallery-img" alt="Nail Art Design 3">
                             </div>
                         </div>
                     </div>
@@ -281,7 +350,6 @@
     </div>
 </section>
 
-
 <!-- 4. APPOINTMENT BOOKING SECTION -->
 <section id="book" class="py-5">
     <div class="container py-4">
@@ -290,60 +358,78 @@
                 <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white border-top border-4 border-warning">
                     <div class="text-center mb-4">
                         <h2 class="fw-bold">Book Your Appointment</h2>
-                        <p class="text-muted">Select your preferred date, service, and time. We'll confirm shortly!</p>
+                        <p class="text-muted">Select your preferred date, service, and time slot. We'll confirm shortly!</p>
                     </div>
 
                     <form action="{% url 'book_appointment' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label class="form-label fw-medium">Full Name</label>
-            <input type="text" name="full_name" class="form-control rounded-3 p-2.5" placeholder="Jane Doe" required>
-        </div>
-        <div class="col-md-6">
-            <label class="form-label fw-medium">Phone Number</label>
-            <input type="tel" name="phone_number" class="form-control rounded-3 p-2.5" placeholder="(555) 000-0000" required>
-        </div>
-        
-        <div class="col-md-6">
-            <label class="form-label fw-medium">Select Service</label>
-            <select name="service" class="form-select rounded-3 p-2.5" required>
-                <option value="" disabled selected>Select a Service</option>
-                {% for service in services %}
-                    <option value="{{ service.name }} (${{ service.price }})">{{ service.name }} - ${{ service.price }}</option>
-                {% endfor %}
-            </select>
-        </div>
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person text-muted"></i></span>
+                                    <input type="text" name="full_name" class="form-control" placeholder="Jane Doe" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone text-muted"></i></span>
+                                    <input type="tel" name="phone_number" class="form-control" placeholder="(555) 000-0000" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Select Service</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-stars text-muted"></i></span>
+                                    <select name="service" class="form-select" required>
+                                        <option value="" disabled selected>Select a Service</option>
+                                        {% for service in services %}
+                                            <option value="{{ service.name }} (${{ service.price }})">{{ service.name }} - ${{ service.price }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
 
-        <div class="col-md-6">
-            <label class="form-label fw-medium">Preferred Date</label>
-            <input type="date" name="preferred_date" id="preferred_date" class="form-control rounded-3 p-2.5" required>
-        </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Preferred Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-event text-muted"></i></span>
+                                    <input type="date" name="preferred_date" id="preferred_date" class="form-control" required>
+                                </div>
+                            </div>
 
-        <div class="col-md-12">
-            <label for="time_slot" class="form-label fw-medium">Preferred Time Slot</label>
-            <select name="time_slot" id="time_slot" class="form-select rounded-3 p-2.5" required disabled>
-                <option value="" selected disabled>Please select a date first</option>
-            </select>
-        </div>
+                            <div class="col-12">
+                                <label for="time_slot" class="form-label fw-semibold">Preferred Time Slot</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-clock text-muted"></i></span>
+                                    <select name="time_slot" id="time_slot" class="form-select" required disabled>
+                                        <option value="" selected disabled>Please select a date first</option>
+                                    </select>
+                                </div>
+                            </div>
 
-        <div class="col-12">
-            <label class="form-label fw-medium">Special Requests or Notes</label>
-            <input type="text" name="special_requests" class="form-control rounded-3 p-2.5" placeholder="Optional notes...">
-        </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Special Requests or Notes</label>
+                                <textarea name="special_requests" class="form-control" rows="2" placeholder="Mention any extra preferences or questions..."></textarea>
+                            </div>
 
-        <!-- NEW: Inspiration Image Input -->
-        <div class="col-12">
-            <label class="form-label fw-medium">Inspiration Photo / Desired Design</label>
-            <input type="file" name="inspiration_image" accept="image/*" class="form-control rounded-3 p-2.5">
-            <div class="form-text">Upload a picture of the nail art or design style you'd like (optional).</div>
-        </div>
+                            <!-- Inspiration Image Input -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Inspiration Photo / Desired Design</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-image text-muted"></i></span>
+                                    <input type="file" name="inspiration_image" accept="image/*" class="form-control">
+                                </div>
+                                <div class="form-text mt-1 text-muted">Upload a picture of the nail art style you'd like (optional).</div>
+                            </div>
 
-        <div class="col-12 text-center mt-4">
-            <button type="submit" class="btn btn-gold w-100 py-3 text-uppercase fw-bold">Request Appointment</button>
-        </div>
-    </div>
-</form>
+                            <div class="col-12 text-center mt-4">
+                                <button type="submit" class="btn btn-gold w-100 py-3 text-uppercase fw-bold shadow">Request Appointment</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -370,7 +456,7 @@
                 .then(response => response.json())
                 .then(data => {
                     slotSelect.innerHTML = '';
-                    if (data.slots.length === 0) {
+                    if (!data.slots || data.slots.length === 0) {
                         slotSelect.innerHTML = '<option value="" disabled selected>No available slots for this date</option>';
                         slotSelect.disabled = true;
                     } else {
