@@ -137,17 +137,11 @@ STORAGES = {
 }
 
 # 2. Add this explicitly so cloudinary_storage doesn't throw an AttributeError
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"MEDIA_URL = '/media/'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_URL = '/media/'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-import os
-
-
-import os
-
-import os
 
 # Email Settings (Gmail SMTP)
 SALON_WHATSAPP_NUMBER = os.environ.get('SALON_WHATSAPP_NUMBER', '233547867158')
