@@ -134,8 +134,27 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Base URL to serve media files in browser
+
 MEDIA_URL = '/media/'
 
-# Absolute filesystem path to the directory where uploaded files will be stored
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+import os
+
+
+import os
+
+import os
+
+# Email Settings (Gmail SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+DEFAULT_FROM_EMAIL = f"BB Nails Salon <{os.environ.get('EMAIL_USER')}>"
+
+# The salon owner's notification email
+SALON_ADMIN_EMAIL = os.environ.get('EMAIL_USER')
