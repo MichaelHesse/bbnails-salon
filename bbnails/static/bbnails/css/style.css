@@ -1,38 +1,96 @@
-:root {
-  --primary-bg: #fdfbf7;
-  --accent-gold: #d4af37;
-  --text-dark: #2c2c2c;
-  --card-bg: #ffffff;
-  --radius: 16px;
-}
 
-body {
-  background-color: var(--primary-bg);
-  color: var(--text-dark);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
+  :root {
+    /* Deep Pink & Luxe Palette */
+    --primary-pink: #d81b60;       /* Deep Vibrant Pink */
+    --hot-pink: #ff1493;           /* Hot Pink Accent */
+    --dark-magenta: #880e4f;       /* Dark Elegant Pink/Plum */
+    --soft-blush: #fce4ec;         /* Soft Blush Background */
+    --gold-accent: #ffd700;         /* Sparkle Gold Accent */
+    --gradient-pink: linear-gradient(135deg, #ff1493 0%, #c2185b 100%);
+    --gradient-luxe: linear-gradient(135deg, #d81b60 0%, #880e4f 100%);
+  }
 
-/* Glassmorphism Card Style */
-.booking-card {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  padding: 2rem;
-}
+  /* Body & Global Background */
+  body {
+    background-color: #fff0f5; /* Lavender Blush */
+    color: #2c2c2c;
+  }
 
-/* Custom Styled Buttons */
-.btn-primary-salon {
-  background: linear-gradient(135deg, #d4af37 0%, #b89628 100%);
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  padding: 12px 28px;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+  /* Vibrant Navbar Styling */
+  .navbar {
+    background: var(--gradient-luxe) !important;
+    box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+  }
 
-.btn-primary-salon:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
-}
+  .navbar-brand {
+    font-weight: 800;
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .nav-link {
+    color: #ffe4e1 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--gold-accent) !important;
+    transform: translateY(-1px);
+  }
+
+  /* Colorful Cards for Services & Dashboard */
+  .card {
+    border: none;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(216, 27, 96, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(216, 27, 96, 0.25);
+  }
+
+  .card-header {
+    background: var(--gradient-pink);
+    color: white;
+    border-radius: 16px 16px 0 0 !important;
+    font-weight: 700;
+  }
+
+  /* Buttons */
+  .btn-primary, .btn-nav-gold {
+    background: var(--gradient-pink);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 10px 24px;
+    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.35);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover, .btn-nav-gold:hover {
+    background: var(--gradient-luxe);
+    box-shadow: 0 6px 18px rgba(136, 14, 79, 0.45);
+    transform: scale(1.03);
+  }
+
+  /* Price Tags */
+  .service-price, .badge-price {
+    color: var(--primary-pink);
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+
+  /* Hero / Banner Section */
+  .hero-section {
+    background: linear-gradient(rgba(136, 14, 79, 0.7), rgba(216, 27, 96, 0.7)), url('/static/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    border-radius: 0 0 30px 30px;
+  }
