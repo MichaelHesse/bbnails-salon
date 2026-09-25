@@ -43,26 +43,26 @@ logger = logging.getLogger(__name__)
 
 def book_appointment(request):
     if request.method == 'POST':
-        full_name = request.POST.get('full_name')
-        phone_number = request.POST.get('phone_number')
-        service = request.POST.get('service')
-        time_slot = request.POST.get('time_slot')
-        preferred_date = request.POST.get('preferred_date')
-        special_requests = request.POST.get('special_requests', '')
-        inspiration_image = request.FILES.get('inspiration_image')
-
-        # Check for existing booking
-        is_already_booked = Appointment.objects.filter(
-            preferred_date=preferred_date,
-            time_slot=time_slot
-        ).exclude(status='Cancelled').exists()
-
-        if is_already_booked:
-            messages.error(request, f"Sorry, the slot '{time_slot}' on {preferred_date} is no longer available.")
-            return redirect('home')
-
-        # 1. Save appointment to database
         try:
+            full_name = request.POST.get('full_name')
+            phone_number = request.POST.get('phone_number')
+            service = request.POST.get('service')
+            time_slot = request.POST.get('time_slot')
+            preferred_date = request.POST.get('preferred_date')
+            special_requests = request.POST.get('special_requests', '')
+            inspiration_image = request.FILES.get('inspiration_image')
+
+            # 1. Check if already booked
+            is_already_booked = Appointment.objects.filter(
+                preferred_date=preferred_date,
+                time_slot=time_slot
+            ).exclude(status='Cancelled').exists()
+
+            if is_already_booked:
+                messages.error(request, f"Sorry, the slot '{time_slot}' on {preferred_date} is no longer available.")
+                return redirect('home')
+
+            # 2. Save appointment to database
             appointment = Appointment.objects.create(
                 full_name=full_name,
                 phone_number=phone_number,
@@ -72,64 +72,65 @@ def book_appointment(request):
                 special_requests=special_requests,
                 inspiration_image=inspiration_image
             )
-        except Exception as e:
-            logger.error(f"Error saving appointment: {e}")
-            messages.error(request, "An error occurred while processing your booking. Please try again.")
+
+            # 3. Send Email Alert (Optional/Safe)
+            try:
+                admin_email = getattr(settings, 'SALON_ADMIN_EMAIL', None)
+                from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
+
+                if admin_email and from_email:
+                    subject = f"NEW BOOKING: {full_name} - {preferred_date} ({time_slot})"
+                    message = (
+                        f"You have a new appointment booking!\n\n"
+                        f"Client Name: {full_name}\n"
+                        f"Phone Number: {phone_number}\n"
+                        f"Service: {service}\n"
+                        f"Date: {preferred_date}\n"
+                        f"Time Slot: {time_slot}\n"
+                        f"Special Requests: {special_requests if special_requests else 'None'}"
+                    )
+                    send_mail(
+                        subject=subject,
+                        message=message,
+                        from_email=from_email,
+                        recipient_list=[admin_email],
+                        fail_silently=True,
+                    )
+            except Exception as e:
+                logger.error(f"Email failure: {e}")
+
+            # 4. Send Twilio SMS (Optional/Safe)
+            try:
+                from twilio.rest import Client
+                account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+                auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+                twilio_number = os.environ.get('TWILIO_PHONE_NUMBER')
+
+                if account_sid and auth_token and twilio_number and phone_number:
+                    client = Client(account_sid, auth_token)
+                    sms_body = (
+                        f"Hi {full_name}, your booking at BB Nails Salon is received!\n"
+                        f"Service: {service}\n"
+                        f"Date: {preferred_date} @ {time_slot}.\n"
+                        f"See you soon!"
+                    )
+                    client.messages.create(
+                        body=sms_body,
+                        from_=twilio_number,
+                        to=phone_number
+                    )
+            except Exception as e:
+                logger.error(f"SMS failure: {e}")
+
+            messages.success(request, "Your appointment request has been submitted successfully!")
             return redirect('home')
 
-        # 2. Attempt Email Notification (fails safely if credentials/SMTP issue)
-        try:
-            admin_email = getattr(settings, 'SALON_ADMIN_EMAIL', None)
-            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
-
-            if admin_email and from_email:
-                subject = f"NEW BOOKING: {full_name} - {preferred_date} ({time_slot})"
-                message = (
-                    f"You have a new appointment booking!\n\n"
-                    f"Client Name: {full_name}\n"
-                    f"Phone Number: {phone_number}\n"
-                    f"Service: {service}\n"
-                    f"Date: {preferred_date}\n"
-                    f"Time Slot: {time_slot}\n"
-                    f"Special Requests: {special_requests if special_requests else 'None'}"
-                )
-                send_mail(
-                    subject=subject,
-                    message=message,
-                    from_email=from_email,
-                    recipient_list=[admin_email],
-                    fail_silently=True,  # Crucial: prevents server crash on SMTP errors
-                )
         except Exception as e:
-            logger.error(f"Email failed to send: {e}")
-
-        # 3. Attempt Twilio SMS Notification (fails safely if Twilio isn't configured yet)
-        try:
-            account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-            auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-            twilio_number = os.environ.get('TWILIO_PHONE_NUMBER')
-
-            if account_sid and auth_token and twilio_number and phone_number:
-                client = Client(account_sid, auth_token)
-                sms_body = (
-                    f"Hi {full_name}, your booking at BB Nails Salon is received!\n"
-                    f"Service: {service}\n"
-                    f"Date: {preferred_date} @ {time_slot}.\n"
-                    f"See you soon!"
-                )
-                client.messages.create(
-                    body=sms_body,
-                    from_=twilio_number,
-                    to=phone_number
-                )
-        except Exception as e:
-            logger.error(f"SMS failed to send: {e}")
-
-        messages.success(request, "Your appointment request has been submitted successfully!")
-        return redirect('home')
+            # Catch any database or form processing error and print it to the screen!
+            messages.error(request, f"Booking Error: {str(e)}")
+            return redirect('home')
 
     return redirect('home')
-
 
 
 # Dynamic API endpoint for AJAX slot fetching based on selected date
