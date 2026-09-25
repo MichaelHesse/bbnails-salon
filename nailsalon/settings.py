@@ -36,18 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # 1. staticfiles MUST COME FIRST
+    'cloudinary_storage',          # 2. cloudinary_storage MUST COME AFTER staticfiles
     'cloudinary',
     'bbnails',
 ]
 
-# Cloudinary Configuration
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'xyvqd2e2'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '543887491882665'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'zxpJcuy4DZdamuYpFJ7lhp9V8aE'),
-}
 
 # Middleware setup (add Whitenoise right under SecurityMiddleware)
 MIDDLEWARE = [
@@ -123,16 +117,21 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Cloudinary Credentials
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'xyvqd2e2'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '543887491882665'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'zxpJcuy4DZdamuYpFJ7lhp9V8aE'),
+}
 
-# Static Files (CSS, JavaScript, Images)
+# Static & Media URLs and Paths
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Media Files (User-uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Unified Storage Configurations for Django 4.2+ & 6.0
+# Modern Django Storage Backend Dictionary
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -142,6 +141,8 @@ STORAGES = {
     },
 }
 
+# Compatibility fix required by django-cloudinary-storage
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Email & Contact Settings
 SALON_WHATSAPP_NUMBER = os.environ.get('SALON_WHATSAPP_NUMBER', '233547867158')
