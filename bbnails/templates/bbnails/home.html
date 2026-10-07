@@ -444,37 +444,50 @@
 
         // Restrict date selection to today onwards
         const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+        if (dateInput) {
+            dateInput.setAttribute('min', today);
 
-        dateInput.addEventListener('change', function() {
-            const dateValue = this.value;
+            dateInput.addEventListener('change', function() {
+                const dateValue = this.value;
 
-            slotSelect.innerHTML = '<option value="" disabled selected>Loading available slots...</option>';
-            slotSelect.disabled = true;
+                if (!dateValue) return;
 
-            fetch(`/api/available-slots/?date=GH₵{dateValue}`)
-                .then(response => response.json())
-                .then(data => {
-                    slotSelect.innerHTML = '';
-                    if (!data.slots || data.slots.length === 0) {
-                        slotSelect.innerHTML = '<option value="" disabled selected>No available slots for this date</option>';
+                slotSelect.innerHTML = '<option value="" disabled selected>Loading available slots...</option>';
+                slotSelect.disabled = true;
+
+                // FIX 1: Corrected template literal syntax (${dateValue})
+                fetch(`/api/available-slots/?date=${dateValue}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Server returned status ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        slotSelect.innerHTML = '';
+                        if (!data.slots || data.slots.length === 0) {
+                            slotSelect.innerHTML = '<option value="" disabled selected>No available slots for this date</option>';
+                            slotSelect.disabled = true;
+                        } else {
+                            slotSelect.innerHTML = '<option value="" disabled selected>Select an available slot</option>';
+                            data.slots.forEach(slot => {
+                                const option = document.createElement('option');
+                                // FIX 2: Safely handles both array of strings ["09:00 AM"] and array of objects [{"time_slot": "09:00 AM"}]
+                                const slotText = (typeof slot === 'object' && slot !== null) ? slot.time_slot : slot;
+                                option.value = slotText;
+                                option.textContent = slotText;
+                                slotSelect.appendChild(option);
+                            });
+                            slotSelect.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching available slots:', error);
+                        slotSelect.innerHTML = '<option value="" disabled selected>Error loading slots</option>';
                         slotSelect.disabled = true;
-                    } else {
-                        slotSelect.innerHTML = '<option value="" disabled selected>Select an available slot</option>';
-                        data.slots.forEach(slot => {
-                            const option = document.createElement('option');
-                            option.value = slot.time_slot;
-                            option.textContent = slot.time_slot;
-                            slotSelect.appendChild(option);
-                        });
-                        slotSelect.disabled = false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching available slots:', error);
-                    slotSelect.innerHTML = '<option value="" disabled selected>Error loading slots</option>';
-                });
-        });
+                    });
+            });
+        }
     });
 </script>
 
